@@ -16,6 +16,7 @@ export const CardId = styled.Text`
 export const Name = styled.Text`
     font-weight: 700;
     font-size: ${({ theme}) => RFValue(theme.font_size.pokemon_name)}px;
+    text-transform: capitalize;
     color: ${({ theme}) => theme.text.white};
 `;
 
