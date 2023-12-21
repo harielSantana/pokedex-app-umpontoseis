@@ -7,6 +7,7 @@ import GenerationSVG from '../../assets/icons/generation.svg'
 import SortSVG from '../../assets/icons/sort.svg'
 import FilterSVG from '../../assets/icons/filter.svg'
 import Input from '../../components/Input';
+import Card from '../../components/Card';
 
 const HomeScreen: React.FC = () => {
   return (
@@ -31,6 +32,8 @@ const HomeScreen: React.FC = () => {
             </Styled.Description>
 
             <Input icon="search" placeholder="What Pokémon are you looking for?" />
+
+            <Card/>
 
           </Styled.MainContainer>
 
