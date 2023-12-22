@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Text, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, FlatList } from 'react-native';
-import * as Styled from './styles';
+import * as S from './styles';
 import GenerationSVG from '../../assets/icons/generation.svg'
 import SortSVG from '../../assets/icons/sort.svg'
 import FilterSVG from '../../assets/icons/filter.svg'
@@ -49,33 +49,34 @@ const HomeScreen: React.FC = () => {
   return (
     <KeyboardAvoidingView behavior="height" enabled>
 			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <Styled.Container>
+        <S.Container>
           {/* Header */}
-          <Styled.HeaderContainer>
-            <Styled.ImageContainer>
+          <S.HeaderContainer>
+            <S.ImageContainer>
               <GenerationSVG width={26} height={26} color={'#000'}/>
               <SortSVG width={26} height={26} color={'#000'}/>
               <FilterSVG width={26} height={26} color={'#000'}/>
-            </Styled.ImageContainer>
-          </Styled.HeaderContainer>
+            </S.ImageContainer>
+          </S.HeaderContainer>
 
-          <Styled.MainContainer>
-            <Styled.Title>Pokédex</Styled.Title>
-            <Styled.Description>
+          <S.MainContainer>
+            <S.Title>Pokédex</S.Title>
+            <S.Description>
               Search for Pokémon
               by name or using the National Pokédex 
               number.  
-            </Styled.Description>
+            </S.Description>
 
             <Input icon="search" placeholder="What Pokémon are you looking for?" />    
             <FlatList
               data={pokemons}
               renderItem={({item}) => <Card value={item} />}
               keyExtractor={(item) => String(item.id)} 
+              showsVerticalScrollIndicator={false}
             />
-          </Styled.MainContainer>
+          </S.MainContainer>
 
-        </Styled.Container>
+        </S.Container>
       </TouchableWithoutFeedback>
 		</KeyboardAvoidingView>
   );

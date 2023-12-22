@@ -13,6 +13,7 @@ export const InputContainer = styled.View`
     
     padding: 15px;
     margin-top: 25px;
+    margin-bottom: 25px;
 `;
 
 export const InputField = styled.TextInput`

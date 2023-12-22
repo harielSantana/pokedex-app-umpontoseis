@@ -62,9 +62,9 @@ export default {
 
 	font_size: {
 		title: 100,
-		application_title: 32,
-		pokemon_name: 26,
-		filter_type_and_description:16,
+		application_title: 30,
+		pokemon_name: 23,
+		filter_type_and_description:13,
 		pokemon_number_type: 12,
 	},
 };

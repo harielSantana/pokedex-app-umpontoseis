@@ -6,8 +6,8 @@ const isPlatform = Platform.OS === "ios";
 
 export const Container = styled.View`
     margin-top: ${RFValue(isPlatform ? 50: 20)}px;
-    padding-left: ${RFValue(30)}px;
-    padding-right: ${RFValue(30)}px;
+    padding-left: ${RFValue(20)}px;
+    padding-right: ${RFValue(20)}px;
     background-color: ${({theme}) => theme.background.white};
 `;
 

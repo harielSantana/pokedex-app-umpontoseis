@@ -1,6 +1,11 @@
+import { IPokemonType } from "../../components/Type/_types";
 
-export interface PokemonType {
-  type: string;
+export type PokemonType = {
+  slot: number;
+  type: {
+    name: IPokemonType;
+    url: string;
+  };
 }
 
 export type Pokemon = {
