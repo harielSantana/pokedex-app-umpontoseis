@@ -12,7 +12,7 @@ export const PokemonCard = styled.TouchableOpacity<{ type: IPokemonType }>`
 
 export const Initial = styled.View`
     position:relative;
-    width: 50%;
+    width: 65%;
 `;
 
 export const InitialImage = styled.Image`
@@ -48,7 +48,7 @@ export const PokemonTypeContainer = styled.View`
 export const LastImage = styled.View`
     justify-content: center;
     align-items: center;
-    width: 50%;
+    width: 35%;
     position: relative;
 `;
 

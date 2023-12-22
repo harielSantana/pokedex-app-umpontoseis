@@ -73,6 +73,7 @@ const HomeScreen: React.FC = () => {
               renderItem={({item}) => <Card value={item} />}
               keyExtractor={(item) => String(item.id)} 
               showsVerticalScrollIndicator={false}
+              style={{ height: "75%"}}
             />
           </S.MainContainer>
 
