@@ -4,6 +4,9 @@ import styled from "styled-components/native";
 
 const isPlatform = Platform.OS === "ios";
 
+export const KAV = styled.KeyboardAvoidingView`
+`;
+
 export const Container = styled.View`
     margin-top: ${RFValue(isPlatform ? 50: 20)}px;
     padding-left: ${RFValue(20)}px;

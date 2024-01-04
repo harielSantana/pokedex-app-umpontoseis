@@ -13,17 +13,24 @@ export const InputContainer = styled.View`
     
     padding: 15px;
     margin-top: 25px;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
 `;
 
 export const InputField = styled.TextInput`
     flex: 1;
     padding: 0 10px;
-    color: ${({ theme }) => theme.background.default_input};
+    color: ${({ theme }) => theme.text.gray};
     font-size: ${({ theme }) => RFValue(theme.font_size.filter_type_and_description)}px;
     font-weight: 400;
 `;
 
 export const InputIcon = styled.Image`
     margin-right: 5px;
+`;
+
+export const BlurButton = styled.View`
+    margin-top: -10px;
+    width: 100%;
+    height: 25px;
+    blur: 15px;
 `;

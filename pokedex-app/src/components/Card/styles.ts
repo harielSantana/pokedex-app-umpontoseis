@@ -4,9 +4,9 @@ import { IPokemonType } from "../Type/_types";
 
 export const PokemonCard = styled.TouchableOpacity<{ type: IPokemonType }>` 
     padding: ${RFValue(20)}px;
-    margin-bottom: ${RFValue(20)}px;
+    margin-top: ${RFValue(20)}px;
     border-radius: 10px;
-    background-color: ${({theme, type})=> theme.background_type[type] || "#FFFFF"};
+    background-color: ${({ theme, type }) => theme.background_type[type] || "#FFFFF"};
     flex-direction: row;
 `;
 
@@ -26,16 +26,16 @@ export const InitialImage = styled.Image`
 
 export const CardId = styled.Text`
     font-weight: 900;
-    font-size: ${({ theme}) => RFValue(theme.font_size.pokemon_number_type)}px;
+    font-size: ${({ theme }) => RFValue(theme.font_size.pokemon_number_type)}px;
 
-    color: ${({ theme}) => theme.text.number};
+    color: ${({ theme }) => theme.text.number};
 `;
 
 export const Name = styled.Text`
     font-weight: 700;
-    font-size: ${({ theme}) => RFValue(theme.font_size.pokemon_name)}px;
+    font-size: ${({ theme }) => RFValue(theme.font_size.pokemon_name)}px;
     text-transform: capitalize;
-    color: ${({ theme}) => theme.text.white};
+    color: ${({ theme }) => theme.text.white};
 `;
 
 export const PokemonTypeContainer = styled.View`
@@ -53,7 +53,7 @@ export const LastImage = styled.View`
 `;
 
 export const PokemonImage = styled.Image`
-    margin-top: -40px;
+    margin-top: -45px;
     width: ${RFValue(130)}px;
     height: ${RFValue(130)}px;
 `;
