@@ -32,5 +32,5 @@ export const BlurButton = styled.View`
     margin-top: -10px;
     width: 100%;
     height: 25px;
-    blur: 15px;
+
 `;

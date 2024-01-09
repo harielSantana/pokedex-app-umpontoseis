@@ -4,18 +4,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { HomeScreen } from "../screens/Home";
 import { DescriptionScreen } from "../screens/Description";
 
-type AppStackParamList = {
-  Home: undefined;
-  Description: undefined;
-};
-
-const Stack = createStackNavigator<AppStackParamList>();
+const Stack = createStackNavigator();
 
 const AppNavigator: React.FC = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Description" component={DescriptionScreen} />
+      <Stack.Screen name="home" component={HomeScreen} />
+      <Stack.Screen name="description" component={DescriptionScreen} />
     </Stack.Navigator>
   );
 };

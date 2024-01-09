@@ -11,20 +11,23 @@ import { RFValue } from "react-native-responsive-fontsize";
 
 import themes from "./src/themes";
 import AppNavigator from "./src/routes/stack.routes";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const App: React.FC = () => {
   const isPlatform = Platform.OS === "ios";
 
   return (
     <NavigationContainer>
-      <ThemeProvider theme={themes}>
-        <StatusBar
-          backgroundColor="transparent"
-          translucent
-          barStyle={"light-content"}
-        />
-        <AppNavigator />
-      </ThemeProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ThemeProvider theme={themes}>
+          <StatusBar
+            backgroundColor="transparent"
+            translucent
+            barStyle={"light-content"}
+          />
+          <AppNavigator />
+        </ThemeProvider>
+      </GestureHandlerRootView>
     </NavigationContainer>
   );
 };

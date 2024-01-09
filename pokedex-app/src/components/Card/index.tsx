@@ -1,36 +1,48 @@
-import { Image, ViewProps } from 'react-native';
-import * as S from './styles';
-import PokemonType from '../Type';
-import { Pokemon } from '../../screens/Home/_types';
-import InitialImage from '../../assets/images/dots.png';
+import { Image, ViewProps } from "react-native";
+import * as S from "./styles";
+import PokemonType from "../Type";
+import { Pokemon } from "../../screens/Home/_types";
+import InitialImage from "../../assets/images/dots.png";
+import { useNavigation } from "@react-navigation/native";
 
 interface CardProps {
-    value: Pokemon
+  value: Pokemon;
 }
 
 const Card: React.FC<CardProps> = (value) => {
-    const pokemon = value.value;
+  const pokemon = value.value;
 
-    return (
-        <S.PokemonCard type={pokemon.types[0].type.name}>
-            <S.Initial>
-                <S.CardId>#0{pokemon.id}</S.CardId>
-                <S.Name>{pokemon.name}</S.Name>
-                <S.InitialImage source={InitialImage}/>
-                <S.PokemonTypeContainer>
-                {pokemon.types.map((type) =>     
-                    <PokemonType key={type.slot} type={type.type.name}/>)}
-                </S.PokemonTypeContainer>
-            </S.Initial>
-            <S.LastImage>
-                <S.PokemonImage 
-                    source={{
-                        uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`,
-                    }}
-                />
-            </S.LastImage>
-        </S.PokemonCard>
-    )
-}
+  const navigation = useNavigation();
+
+  const handleCardPress = (pokemonId: number) => {
+    // Navegar para a tela desejada, passando o ID do Pokémon como parâmetro
+    navigation.navigate("description", { pokemonId });
+  };
+
+  return (
+    <S.PokemonCard
+      type={pokemon.types[0].type.name}
+      onPress={() => handleCardPress(pokemon.id)}
+    >
+      <S.Initial>
+        <S.CardId>#0{pokemon.id}</S.CardId>
+        <S.Name>{pokemon.name}</S.Name>
+        <S.InitialImage source={InitialImage} />
+        <S.PokemonTypeContainer>
+          {pokemon.types.map((type) => (
+            <PokemonType key={type.slot} type={type.type.name} />
+          ))}
+        </S.PokemonTypeContainer>
+      </S.Initial>
+      <S.LastImage>
+        <S.PokemonImage
+          source={{
+            uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`,
+          }}
+        />
+      </S.LastImage>
+    </S.PokemonCard>
+  );
+};
 
 export default Card;

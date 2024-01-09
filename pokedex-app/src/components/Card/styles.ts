@@ -1,13 +1,15 @@
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 import { IPokemonType } from "../Type/_types";
+import { BorderlessButton, RectButton, TouchableOpacity } from "react-native-gesture-handler";
 
-export const PokemonCard = styled.TouchableOpacity<{ type: IPokemonType }>` 
+export const PokemonCard = styled.TouchableOpacity <{ type: IPokemonType }>` 
     padding: ${RFValue(20)}px;
     margin-top: ${RFValue(20)}px;
     border-radius: 10px;
     background-color: ${({ theme, type }) => theme.background_type[type] || "#FFFFF"};
     flex-direction: row;
+    border-left: 1px solid #000;
 `;
 
 export const Initial = styled.View`
