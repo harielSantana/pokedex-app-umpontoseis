@@ -20,6 +20,7 @@ import { Pokemon, Resquest } from "./_types";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { BorderlessButton, RectButton } from "react-native-gesture-handler";
 import { Modalize } from "react-native-modalize";
+import FilterModal from "../../components/Modals/Filter";
 
 const platform_ios = Platform.OS === "ios";
 
@@ -133,10 +134,8 @@ export const HomeScreen: React.FC = () => {
           </S.Container>
         </TouchableWithoutFeedback>
       </S.KAV>
-      <Modalize ref={modalizeRef}>
-        <View>
-          <Text>This is your modal content</Text>
-        </View>
+      <Modalize snapPoint={500} ref={modalizeRef}>
+        <FilterModal />
       </Modalize>
     </>
   );

@@ -1,7 +1,6 @@
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 import { IPokemonType } from "../Type/_types";
-import { BorderlessButton, RectButton, TouchableOpacity } from "react-native-gesture-handler";
 
 export const PokemonCard = styled.TouchableOpacity <{ type: IPokemonType }>` 
     padding: ${RFValue(20)}px;
