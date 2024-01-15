@@ -18,4 +18,6 @@ export const Description = styled.Text`
     font-weight: normal;
     font-size: ${({ theme }) =>
         RFValue(theme.font_size.filter_type_and_description)}px;
-`; 
+`;
+
+export const FilterContainer = styled.View` `;
