@@ -15,7 +15,7 @@ import SortSVG from "../../assets/icons/sort.svg";
 import FilterSVG from "../../assets/icons/filter.svg";
 import SearchInput from "../../components/Input";
 import Card from "../../components/Card";
-import api from "../../services/api";
+import { api } from "../../services/api";
 import { Pokemon, Resquest } from "./_types";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { BorderlessButton, RectButton } from "react-native-gesture-handler";
@@ -25,9 +25,9 @@ import FilterModal from "../../components/Modals/Filter";
 const platform_ios = Platform.OS === "ios";
 
 export const HomeScreen: React.FC = () => {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
 
   const modalizeRef = useRef<Modalize>(null);
@@ -134,7 +134,7 @@ export const HomeScreen: React.FC = () => {
           </S.Container>
         </TouchableWithoutFeedback>
       </S.KAV>
-      <Modalize snapPoint={500} ref={modalizeRef}>
+      <Modalize snapPoint={550} ref={modalizeRef}>
         <FilterModal />
       </Modalize>
     </>

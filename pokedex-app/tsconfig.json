@@ -8,6 +8,7 @@
       "@routes/*": ["routes/*"],
       "@screens/*": ["screens/*"],
       "@storage/*": ["storage/*"],
+      "@services/*": ["services/*"],
       "@theme/*": ["theme/*"],
       "@utils/*": ["utils/*"]
     }
