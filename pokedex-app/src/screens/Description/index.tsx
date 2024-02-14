@@ -1,42 +1,28 @@
 // screens/HomeScreen.tsx
 
+import { Feather } from "@expo/vector-icons";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import * as S from "./styles";
-import { useRoute } from "@react-navigation/native";
-import { api } from "../../services/api/index";
+import { Alert, ScrollView, Text } from "react-native";
 import { useTheme } from "styled-components/native";
+import circle from '../../assets/images/circle.png';
+import { api } from "../../services/api/index";
 
-interface Stat {
-  base_stat: number;
-  stat: {
-    name: string;
-  };
-}
+import { FadeAnimation } from "@components/FadeAnimation";
+import { PokemonProps } from "./interface";
+import * as S from './styles';
 
-interface Ability {
-  ability: {
-    name: string;
-  };
-}
-
-interface PokemonProps {
-  id: number;
-  name: string;
-  stats: Stat[];
-  abitilies: Ability[];
-  color: string;
-}
 
 export const DescriptionScreen: React.FC = () => {
   const { type } = useTheme();
-
   const route = useRoute();
+  const {goBack} = useNavigation();
   const { pokemonId } = route.params as { pokemonId: number };
 
-  const [isLoading, setIsLoading] = useState(true);
   const [pokemon, setPokemon] = useState({} as PokemonProps);
+  const [loading, setLoading] = useState(true)
 
-  async function getPokemonDetails(pokemonId: number): Promise<Request> {
+  async function getPokemonDetails(pokemonId: number) {
     try {
       const response = await api.get(`pokemon/${pokemonId}`);
       const { id, name, types, abilities, stats } = response.data;
@@ -44,13 +30,23 @@ export const DescriptionScreen: React.FC = () => {
       const pokemonType = types[0].type.name;
       const backgroundColor = type[pokemonType];
 
-      console.log(abilities);
 
-      return;
+      console.log("Pokemon Type: " + pokemonType);
+      console.log("Background Color: " + backgroundColor);
+
+      setPokemon({
+        id,
+        name,
+        types,
+        abilities,
+        stats,
+        color: backgroundColor,
+      });
+
     } catch (err) {
-      throw new Error(err);
+      Alert.alert('Algo deu errado', 'Não foi possível carregar os detalhes do pokémon')
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   }
 
@@ -60,5 +56,31 @@ export const DescriptionScreen: React.FC = () => {
     }
   }, [pokemonId]);
 
-  return <S.Container></S.Container>;
+  function handleGoBack(){
+    goBack();
+  }
+
+  return (
+    <>
+      {loading ? <><Text>Carregando</Text></> :  <ScrollView style={{ flex: 1}}>
+      <S.Header type={pokemon.types[0].type.name}>
+        <S.BackButton onPress={handleGoBack}>
+          <Feather name="chevron-left" size={24} color="#FFF"/>
+        </S.BackButton>
+
+          <FadeAnimation>
+            <S.ContentImage>
+              <S.CircleImage source={circle} />
+              <S.PokemonImage
+              source={{
+                uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`,
+              }}
+              />
+            </S.ContentImage>
+          </FadeAnimation>
+
+      </S.Header>
+    </ScrollView>}
+    </>
+  )
 };

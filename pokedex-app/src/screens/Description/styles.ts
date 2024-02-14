@@ -1,45 +1,44 @@
 import { Platform } from "react-native";
-import { RFValue } from "react-native-responsive-fontsize";
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
+import { TypeName } from "./interface";
 
 const isPlatform = Platform.OS === "ios";
 
+interface TypeProps {
+    type: TypeName
+}
 
-export const KAV = styled.KeyboardAvoidingView`
-`;
+export const Header = styled.View<TypeProps>`
+    ${({ theme, type }) => css`
+        background-color: ${theme.background_type[type]};
+        height: 340px;
+        padding: 20px;
 
-export const Container = styled.View`
-    margin-top: ${RFValue(isPlatform ? 50 : 20)}px;
-    padding-left: ${RFValue(20)}px;
-    padding-right: ${RFValue(20)}px;
-    background-color: ${({ theme }) => theme.background.white};
-`;
+        flex-direction: row;
+        align-items: center;
 
-export const HeaderContainer = styled.View`
-`;
+        position: relative;
+    `}`
 
-export const ImageContainer = styled.View`
-    flex-direction: row;
-    justify-content: flex-end;
+export const BackButton = styled.TouchableOpacity`
+    position: absolute;
+    top:70px;
+    left:40px;
+`
 
-    gap: ${RFValue(20)}px;
-`;
+export const ContentImage = styled.View`
+    position: relative;
 
-export const MainContainer = styled.View`
-    margin-top: 12px;
-`;
+`
 
-export const Title = styled.Text`
-    font-weight: bold;
-    font-size: ${({ theme }) =>
-        RFValue(theme.font_size.application_title)}px;
-`;
+export const CircleImage = styled.Image`
+    width: 125px;
+    height: 125px;
+    position: absolute;
+`
 
-export const Description = styled.Text`
-    margin-top: 10px;
+export const PokemonImage = styled.Image`
+    width: 125px;
+    height: 125px;
+`
 
-    color: ${({ theme }) => theme.text.gray};
-    font-weight: normal;
-    font-size: ${({ theme }) =>
-        RFValue(theme.font_size.filter_type_and_description)}px;
-`; 
