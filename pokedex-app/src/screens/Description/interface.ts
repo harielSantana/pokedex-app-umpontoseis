@@ -19,7 +19,7 @@ export type TypeName =
     | 'normal'
     | 'bug'
     | 'flying'
-    | 'eletric'
+    | 'electric'
     | 'ground'
 
 interface PokemonType {

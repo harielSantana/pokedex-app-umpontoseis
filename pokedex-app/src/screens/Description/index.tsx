@@ -10,6 +10,7 @@ import { api } from '../../services/api/index'
 
 import { FadeAnimation } from '@components/FadeAnimation'
 import PokemonType from '@components/Type'
+import { About } from './About'
 import { type PokemonProps } from './interface'
 import * as S from './styles'
 
@@ -28,6 +29,7 @@ export const DescriptionScreen: React.FC = () => {
       const { id, name, types, abilities, stats } = response.data
 
       const pokemonType = types[0].type.name
+      //@ts-ignore
       const backgroundColor = type[pokemonType]
 
       console.log('Pokemon Type: ' + pokemonType)
@@ -89,7 +91,7 @@ export const DescriptionScreen: React.FC = () => {
           </S.Initial>
       </S.Header>
       <S.MainContainer>
-        <S.Title type={pokemon.types[0].type.name}>Pokedex Data</S.Title>
+        <About type={pokemon.types[0].type.name}/>
       </S.MainContainer>
     </ScrollView>}
     </>

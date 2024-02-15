@@ -1,16 +1,15 @@
-import styled from "styled-components/native";
-import { Feather } from '@expo/vector-icons';
 import { RFValue } from "react-native-responsive-fontsize";
+import styled from "styled-components/native";
 
 
 export const InputContainer = styled.View`
     flex-direction: row;
     align-items: center;
-    
+
     background-color: ${({ theme }) => theme.background.default_input};
     border: 1px solid ${({ theme }) => theme.background.default_input};
     border-radius: 8px;
-    
+
     padding: 15px;
     margin-top: 25px;
     margin-bottom: 10px;

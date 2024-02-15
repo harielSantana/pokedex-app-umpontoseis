@@ -1,6 +1,8 @@
-// screens/HomeScreen.tsx
 
+import Card from "@components/Card";
 import { FadeAnimation } from "@components/FadeAnimation";
+import SearchInput from "@components/Input";
+import FilterModal from "@components/Modals/Filter";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   FlatList,
@@ -15,12 +17,10 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 import FilterSVG from "../../assets/icons/filter.svg";
 import GenerationSVG from "../../assets/icons/generation.svg";
 import SortSVG from "../../assets/icons/sort.svg";
-import Card from "../../components/Card";
-import SearchInput from "../../components/Input";
-import FilterModal from "../../components/Modals/Filter";
 import { api } from "../../services/api";
 import { Pokemon, Resquest } from "./_types";
 import * as S from "./styles";
+
 
 const platform_ios = Platform.OS === "ios";
 
