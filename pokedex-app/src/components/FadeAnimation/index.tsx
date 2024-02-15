@@ -14,6 +14,7 @@ export function FadeAnimation({children, ...rest}: FadeAnimationProps) {
     const cardOffset = useSharedValue(0.25 * displayWidth);
 
     const animetedStyle = useAnimatedStyle(() => {
+        'worklet'
         return {
             opacity: cardOpacity.value,
             transform: [{ translateX: cardOffset.value }]
@@ -21,12 +22,12 @@ export function FadeAnimation({children, ...rest}: FadeAnimationProps) {
     })
 
     useEffect(() => {
-        cardOpacity.value = withTiming(1, { duration:1000});
-        cardOffset.value = withTiming(0, { duration:1000});
+        cardOpacity.value = withTiming(1, { duration:400});
+        cardOffset.value = withTiming(0, { duration:200});
     })
 
     return (
-        <S.AnimationContainer {...rest}>
+        <S.AnimationContainer {...rest} style={animetedStyle}>
             {children}
         </S.AnimationContainer>
     )

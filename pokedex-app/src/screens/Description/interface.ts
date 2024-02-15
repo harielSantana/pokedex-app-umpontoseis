@@ -1,18 +1,17 @@
-
 interface Stat {
-    base_stat: number;
-    stat: {
-      name: string;
-    };
+  base_stat: number
+  stat: {
+    name: string
   }
+}
 
-  interface Ability {
-    ability: {
-      name: string;
-    };
+interface Ability {
+  ability: {
+    name: string
   }
+}
 
-  export type TypeName =
+export type TypeName =
     | 'grass'
     | 'fire'
     | 'water'
@@ -23,18 +22,17 @@ interface Stat {
     | 'eletric'
     | 'ground'
 
-
-  interface PokemonType {
-    type: {
-      name: TypeName
-    }
+interface PokemonType {
+  type: {
+    name: TypeName
   }
+}
 
 export interface PokemonProps {
-    id: number;
-    name: string;
-    stats: Stat[];
-    abilities: Ability[];
-    color: string;
-    types: PokemonType[];
-  }
+  id: number
+  name: string
+  stats: Stat[]
+  abilities: Ability[]
+  color: string
+  types: PokemonType[]
+}

@@ -1,26 +1,26 @@
 // screens/HomeScreen.tsx
 
+import { FadeAnimation } from "@components/FadeAnimation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
-  Text,
-  Keyboard,
-  TouchableWithoutFeedback,
   FlatList,
+  Keyboard,
   Platform,
-  View,
+  Text,
+  TouchableWithoutFeedback
 } from "react-native";
-import * as S from "./styles";
+import { BorderlessButton } from "react-native-gesture-handler";
+import { Modalize } from "react-native-modalize";
+import { RFPercentage } from "react-native-responsive-fontsize";
+import FilterSVG from "../../assets/icons/filter.svg";
 import GenerationSVG from "../../assets/icons/generation.svg";
 import SortSVG from "../../assets/icons/sort.svg";
-import FilterSVG from "../../assets/icons/filter.svg";
-import SearchInput from "../../components/Input";
 import Card from "../../components/Card";
+import SearchInput from "../../components/Input";
+import FilterModal from "../../components/Modals/Filter";
 import { api } from "../../services/api";
 import { Pokemon, Resquest } from "./_types";
-import { RFPercentage } from "react-native-responsive-fontsize";
-import { BorderlessButton, RectButton } from "react-native-gesture-handler";
-import { Modalize } from "react-native-modalize";
-import FilterModal from "../../components/Modals/Filter";
+import * as S from "./styles";
 
 const platform_ios = Platform.OS === "ios";
 
@@ -115,7 +115,9 @@ export const HomeScreen: React.FC = () => {
 
               <FlatList
                 data={pokemons}
-                renderItem={({ item }) => <Card value={item} />}
+                renderItem={({ item }) => <FadeAnimation>
+                  <Card value={item} />
+                </FadeAnimation>}
                 keyExtractor={(item) => String(item.id)}
                 showsVerticalScrollIndicator={false}
                 onEndReached={() => {
