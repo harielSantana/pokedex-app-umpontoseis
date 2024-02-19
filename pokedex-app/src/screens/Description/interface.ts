@@ -35,4 +35,6 @@ export interface PokemonProps {
   abilities: Ability[]
   color: string
   types: PokemonType[]
+  description: string
+  pokemonData: any
 }

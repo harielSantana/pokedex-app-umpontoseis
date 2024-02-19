@@ -29,7 +29,6 @@ export const BackButton = styled.TouchableOpacity`
 
 export const ContentImage = styled.View`
     position: relative;
-
 `
 
 export const CircleImage = styled.Image`
@@ -43,12 +42,12 @@ export const PokemonImage = styled.Image`
     height: 125px;
 `
 
-
-
-export const Initial = styled.View`
+export const Content = styled.View`
     position:relative;
-    width: 65%;
+    width: 60%;
     margin-left: 15px;
+
+    flex-direction: column;
 `;
 
 
@@ -73,13 +72,39 @@ export const PokemonTypeContainer = styled.View`
     gap: 5px;
 `;
 
-export const MainContainer = styled.View`
-    padding: 8%;
-`
+export const DotsImage = styled.Image`
+    width: ${RFValue(60)}px;
+    position: absolute;
+    right: 20px;
+    top: 230px;
+`;
 
-export const Title = styled.Text<TypeProps>`
-    ${({ theme, type }) => css`
-        color: ${theme.background_type[type]};
-        font-weight: 700;
-        font-size: ${RFValue(theme.font_size.pokemon_number_type)}px;
-    `}`
+export const Section = styled.View`
+    flex: 1;
+    padding: 20px;
+    margin-top: -85px;
+    flex-direction: row;
+    justify-content: space-around;
+`;
+
+export const Button = styled.TouchableHighlight``;
+
+export const ButtonText = styled.Text`
+    ${({ theme }) => css`
+        color: ${theme.text.white};
+        font-size: ${RFValue(theme.font_size.filter_type_and_description)}px;
+        font-weight: 500;
+    `}
+`;
+
+export const Container = styled.View`
+    ${({ theme }) => css`
+        flex: 1;
+        padding: 8%;
+        background-color: ${theme.background.white};
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+    `}
+`;
+
+

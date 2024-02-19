@@ -5,14 +5,19 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { Alert, ScrollView, Text } from 'react-native'
 import { useTheme } from 'styled-components/native'
-import circle from '../../assets/images/circle.png'
-import { api } from '../../services/api/index'
 
 import { FadeAnimation } from '@components/FadeAnimation'
 import PokemonType from '@components/Type'
-import { About } from './About'
+
 import { type PokemonProps } from './interface'
 import * as S from './styles'
+
+import circle from '../../assets/images/circle.png'
+import dots from '../../assets/images/dots.png'
+import { api } from '../../services/api/index'
+import { About } from './About'
+import { Evolution } from './Evolution'
+import { Stats } from './Stats'
 
 export const DescriptionScreen: React.FC = () => {
   const { type } = useTheme()
@@ -20,33 +25,52 @@ export const DescriptionScreen: React.FC = () => {
   const { goBack } = useNavigation()
   const { pokemonId } = route.params as { pokemonId: number }
 
-  const [pokemon, setPokemon] = useState({} as PokemonProps)
   const [loading, setLoading] = useState(true)
+  const [page, setPage] = useState(1)
+  const [pokemon, setPokemon] = useState({} as PokemonProps)
 
-  async function getPokemonDetails (pokemonId: number) {
+  async function getPokemonDetails(pokemonId: number) {
     try {
-      const response = await api.get(`pokemon/${pokemonId}`)
-      const { id, name, types, abilities, stats } = response.data
+      const pokemonPromise = api.get(`pokemon/${pokemonId}`);
+      const pokemonSpeciesPromise = api.get(`pokemon-species/${pokemonId}`);
+      const pokemonTypePromise = api.get(`type/${pokemonId}`);
+      const pokemonAbilityPromise = api.get(`ability/${pokemonId}`);
 
-      const pokemonType = types[0].type.name
+      const [pokemonResponse, pokemonSpeciesResponse, pokemonTypeResponse] = await Promise.all([pokemonPromise, pokemonSpeciesPromise,pokemonTypePromise]);
+
+      const { id, name, types, abilities, stats, height, weight } = pokemonResponse.data;
+      const { flavor_text_entries, genera } = pokemonSpeciesResponse.data; // use this data as needed
+      const { damage_relations } = pokemonTypeResponse.data;
+
+
+      const pokemonType = types[0].type.name;
       //@ts-ignore
-      const backgroundColor = type[pokemonType]
+      const backgroundColor = type[pokemonType];
+      const description = flavor_text_entries[7].flavor_text.trim().replace(/\s+/g, ' ');
 
-      console.log('Pokemon Type: ' + pokemonType)
-      console.log('Background Color: ' + backgroundColor)
+      const pokemonData = {
+        species: genera[7].genus,
+        height,
+        weight,
+        weaknesses: damage_relations.double_damage_from.map((type: any) => type.name),
+      }
+
+      console.log(pokemonData.weaknesses)
 
       setPokemon({
         id,
         name,
         types,
-        abilities,
+        abilities: abilities.map((ability: any) => ability.ability.name),
         stats,
-        color: backgroundColor
-      })
+        description,
+        color: backgroundColor,
+        pokemonData
+      });
     } catch (err) {
-      Alert.alert('Algo deu errado', 'Não foi possível carregar os detalhes do pokémon')
+      Alert.alert('Algo deu errado', 'Não foi possível carregar os detalhes do pokémon');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -63,37 +87,62 @@ export const DescriptionScreen: React.FC = () => {
   return (
     <>
       {loading
-        ? <><Text>Carregando</Text></>
-        : <ScrollView style={{ flex: 1 }}>
-      <S.Header type={pokemon.types[0].type.name}>
-        <S.BackButton onPress={handleGoBack}>
-          <Feather name="chevron-left" size={24} color="#FFF"/>
-        </S.BackButton>
+        ? <>
+            <Text>Carregando</Text>
+          </>
+          : <ScrollView
+              style={{ flex: 1, backgroundColor: '#fff' }}
+              showsVerticalScrollIndicator={false}
+            >
+              <S.Header type={pokemon.types[0].type.name}>
+                <S.BackButton onPress={handleGoBack}>
+                  <Feather name="chevron-left" size={24} color="#FFF"/>
+                </S.BackButton>
 
-          <FadeAnimation>
-            <S.ContentImage>
-              <S.CircleImage source={circle} />
-              <S.PokemonImage
-              source={{
-                uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`
-              }}
-              />
-            </S.ContentImage>
-          </FadeAnimation>
-          <S.Initial>
-            <S.CardId>#0{pokemon.id}</S.CardId>
-            <S.Name>{pokemon.name}</S.Name>
-            <S.PokemonTypeContainer>
-              {pokemon.types.map((type: any, index) => (
-                <PokemonType key={index} type={type.type.name} />
-              ))}
-            </S.PokemonTypeContainer>
-          </S.Initial>
-      </S.Header>
-      <S.MainContainer>
-        <About type={pokemon.types[0].type.name}/>
-      </S.MainContainer>
-    </ScrollView>}
+                <FadeAnimation>
+                  <S.ContentImage>
+                    <S.CircleImage source={circle} />
+                    <S.PokemonImage
+                    source={{
+                      uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`
+                    }}
+                    />
+                  </S.ContentImage>
+                </FadeAnimation>
+                <S.Content>
+                  <S.CardId>#0{pokemon.id}</S.CardId>
+                  <S.Name>{pokemon.name}</S.Name>
+                  <S.PokemonTypeContainer>
+                    {pokemon.types.map((type: any, index) => (
+                      <PokemonType key={index} type={type.type.name} />
+                    ))}
+                  </S.PokemonTypeContainer>
+                </S.Content>
+                <S.DotsImage source={dots}/>
+              </S.Header>
+
+              <S.Section>
+                <S.Button>
+                  <S.ButtonText onPress={() => setPage(1)}>About</S.ButtonText>
+                </S.Button>
+
+                <S.Button>
+                  <S.ButtonText onPress={() => setPage(2)}>Stats</S.ButtonText>
+                </S.Button>
+
+
+                <S.Button>
+                  <S.ButtonText onPress={() => setPage(3)}>Evolution</S.ButtonText>
+                </S.Button>
+              </S.Section>
+
+              <S.Container>
+                {page === 1 && <About type={pokemon.types[0].type.name} pokemon={pokemon} />}
+                {page === 2 && <Stats/>}
+                {page === 3 && <Evolution/>}
+              </S.Container>
+            </ScrollView>
+      }
     </>
   )
 }

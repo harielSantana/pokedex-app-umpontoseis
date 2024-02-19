@@ -1,9 +1,9 @@
-import { Image, ViewProps } from "react-native";
-import * as S from "./styles";
-import PokemonType from "../Type";
-import { Pokemon } from "../../screens/Home/_types";
-import InitialImage from "../../assets/images/dots.png";
 import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import InitialImage from "../../assets/images/dots.png";
+import { Pokemon } from "../../screens/Home/_types";
+import PokemonType from "../Type";
+import * as S from "./styles";
 
 interface CardProps {
   value: Pokemon;
