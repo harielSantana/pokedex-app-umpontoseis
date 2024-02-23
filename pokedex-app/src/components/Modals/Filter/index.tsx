@@ -1,7 +1,9 @@
-import { Fragment } from "react";
-import * as S from "./styles";
-import FilterType from "@components/Filters/Types";
 import { CustomButton } from "@components/Button";
+import FilterType from "@components/Filters/Types";
+
+import * as S from "./styles";
+
+import React from "react";
 
 const FilterModal: React.FC = () => {
   return (

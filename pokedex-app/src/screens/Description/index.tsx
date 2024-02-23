@@ -38,8 +38,8 @@ export const DescriptionScreen: React.FC = () => {
 
       const [pokemonResponse, pokemonSpeciesResponse, pokemonTypeResponse] = await Promise.all([pokemonPromise, pokemonSpeciesPromise,pokemonTypePromise]);
 
-      const { id, name, types, abilities, stats, height, weight } = pokemonResponse.data;
-      const { flavor_text_entries, genera } = pokemonSpeciesResponse.data; // use this data as needed
+      const { id, name, types, abilities, stats, height, weight,base_experience } = pokemonResponse.data;
+      const { flavor_text_entries, genera, growth_rate, capture_rate,gender_rate} = pokemonSpeciesResponse.data; // use this data as needed
       const { damage_relations } = pokemonTypeResponse.data;
 
 
@@ -53,9 +53,12 @@ export const DescriptionScreen: React.FC = () => {
         height,
         weight,
         weaknesses: damage_relations.double_damage_from.map((type: any) => type.name),
+        growth_rate: growth_rate.name,
+        capture_rate,
+        base_experience,
+        gender_rate
       }
 
-      console.log(pokemonData.weaknesses)
 
       setPokemon({
         id,

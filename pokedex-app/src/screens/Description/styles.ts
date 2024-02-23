@@ -1,9 +1,6 @@
-import { Platform } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import styled, { css } from "styled-components/native";
 import { TypeName } from "./interface";
-
-const isPlatform = Platform.OS === "ios";
 
 interface TypeProps {
     type: TypeName

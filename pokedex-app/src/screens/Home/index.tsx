@@ -136,7 +136,7 @@ export const HomeScreen: React.FC = () => {
           </S.Container>
         </TouchableWithoutFeedback>
       </S.KAV>
-      <Modalize snapPoint={550} ref={modalizeRef}>
+      <Modalize snapPoint={550} ref={modalizeRef} >
         <FilterModal />
       </Modalize>
     </>
