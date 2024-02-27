@@ -73,7 +73,9 @@ export const HomeScreen: React.FC = () => {
           })
         );
 
-        setPokemons((prevPokemons) => [...prevPokemons, ...payloadPokemons]);
+        // Se a página for 1, substitua diretamente a lista de pokémons
+        // Caso contrário, adicione novos pokémons ao final da lista
+        setPokemons(prevPokemons => page === 1 ? payloadPokemons : [...prevPokemons, ...payloadPokemons]);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -83,6 +85,7 @@ export const HomeScreen: React.FC = () => {
 
     getAllPokemons();
   }, [page]);
+
 
   return (
     <>

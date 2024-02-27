@@ -11,7 +11,6 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = (value) => {
   const pokemon = value.value;
-
   const navigation = useNavigation();
 
   const handleCardPress = (pokemonId: number) => {

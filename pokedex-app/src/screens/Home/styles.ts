@@ -30,7 +30,7 @@ export const MainContainer = styled.View`
 
 export const Title = styled.Text`
     font-weight: bold;
-    font-size: ${({ theme }) => 
+    font-size: ${({ theme }) =>
         RFValue(theme.font_size.application_title)}px;
 `;
 
@@ -39,6 +39,6 @@ export const Description = styled.Text`
 
     color: ${({theme})=> theme.text.gray};
     font-weight: normal;
-    font-size: ${({ theme }) => 
+    font-size: ${({ theme }) =>
         RFValue(theme.font_size.filter_type_and_description)}px;
-`; 
+`;
