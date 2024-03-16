@@ -2,12 +2,12 @@ import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 
 
-export const InputContainer = styled.View`
+export const InputContainer = styled.View<{ isFocused: boolean }>`
     flex-direction: row;
     align-items: center;
 
     background-color: ${({ theme }) => theme.background.default_input};
-    border: 1px solid ${({ theme }) => theme.background.default_input};
+    border: 2px solid ${({ theme, isFocused }) => isFocused ? theme.background.button : theme.background.default_input};
     border-radius: 8px;
 
     padding: 15px;
@@ -23,13 +23,8 @@ export const InputField = styled.TextInput`
     font-weight: 400;
 `;
 
-export const InputIcon = styled.Image`
-    margin-right: 5px;
-`;
-
 export const BlurButton = styled.View`
     margin-top: -10px;
     width: 100%;
     height: 25px;
-
 `;
