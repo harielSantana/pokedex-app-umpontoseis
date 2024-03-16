@@ -5,6 +5,8 @@ import styled from "styled-components/native";
 const isPlatform = Platform.OS === "ios";
 
 export const KAV = styled.KeyboardAvoidingView`
+    background-color: ${({theme}) => theme.background.white};
+
 `;
 
 export const Container = styled.View`

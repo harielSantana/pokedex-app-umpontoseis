@@ -17,10 +17,11 @@ export const Container = styled.View`
 `
 
 export const DescriptionText = styled.Text`
-    font-size: 16px;
-    color: #000;
-    margin: 20px 0;
-`
+    ${({ theme }) => css`
+        font-size: ${RFValue(theme.font_size.pokemon_number_type)}px;
+        color: #000;
+        margin: 20px 0;
+    `}`
 
 export const Title = styled.Text<TypeProps>`
     ${({ theme, type }) => css`

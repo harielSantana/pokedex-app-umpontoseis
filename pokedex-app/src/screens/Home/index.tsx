@@ -5,10 +5,10 @@ import SearchInput from "@components/Input";
 import FilterModal from "@components/Modals/Filter";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Keyboard,
   Platform,
-  Text,
   TouchableWithoutFeedback
 } from "react-native";
 import { BorderlessButton } from "react-native-gesture-handler";
@@ -48,7 +48,8 @@ export const HomeScreen: React.FC = () => {
   }
 
   const renderFooter = () => {
-    return loading ? <Text>Loading...</Text> : null;
+  return loading ? <ActivityIndicator size="small" color="#d7d7d7" style={{ marginTop: 6}}/>
+    : null;
   };
 
   useEffect(() => {

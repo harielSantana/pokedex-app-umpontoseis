@@ -14,7 +14,6 @@ const Card: React.FC<CardProps> = (value) => {
   const navigation = useNavigation();
 
   const handleCardPress = (pokemonId: number) => {
-    // Navegar para a tela desejada, passando o ID do Pokémon como parâmetro
     navigation.navigate("description", { pokemonId });
   };
 

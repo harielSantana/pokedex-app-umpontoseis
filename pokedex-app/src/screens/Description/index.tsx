@@ -3,7 +3,7 @@
 import { Feather } from '@expo/vector-icons'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { Alert, ScrollView, Text } from 'react-native'
+import { ActivityIndicator, ScrollView, View } from 'react-native'
 import { useTheme } from 'styled-components/native'
 
 import { FadeAnimation } from '@components/FadeAnimation'
@@ -14,10 +14,10 @@ import * as S from './styles'
 
 import circle from '../../assets/images/circle.png'
 import dots from '../../assets/images/dots.png'
-import { api } from '../../services/api/index'
 import { About } from './About'
 import { Evolution } from './Evolution'
 import { Stats } from './Stats'
+import { getPokemonDetails } from './request'
 
 export const DescriptionScreen: React.FC = () => {
   const { type } = useTheme()
@@ -29,57 +29,24 @@ export const DescriptionScreen: React.FC = () => {
   const [page, setPage] = useState(1)
   const [pokemon, setPokemon] = useState({} as PokemonProps)
 
-  async function getPokemonDetails(pokemonId: number) {
+  async function getPokemon() {
     try {
-      const pokemonPromise = api.get(`pokemon/${pokemonId}`);
-      const pokemonSpeciesPromise = api.get(`pokemon-species/${pokemonId}`);
-      const pokemonTypePromise = api.get(`type/${pokemonId}`);
-      const pokemonAbilityPromise = api.get(`ability/${pokemonId}`);
-
-      const [pokemonResponse, pokemonSpeciesResponse, pokemonTypeResponse] = await Promise.all([pokemonPromise, pokemonSpeciesPromise,pokemonTypePromise]);
-
-      const { id, name, types, abilities, stats, height, weight,base_experience } = pokemonResponse.data;
-      const { flavor_text_entries, genera, growth_rate, capture_rate,gender_rate} = pokemonSpeciesResponse.data; // use this data as needed
-      const { damage_relations } = pokemonTypeResponse.data;
-
-
-      const pokemonType = types[0].type.name;
-      //@ts-ignore
-      const backgroundColor = type[pokemonType];
-      const description = flavor_text_entries[7].flavor_text.trim().replace(/\s+/g, ' ');
-
-      const pokemonData = {
-        species: genera[7].genus,
-        height,
-        weight,
-        weaknesses: damage_relations.double_damage_from.map((type: any) => type.name),
-        growth_rate: growth_rate.name,
-        capture_rate,
-        base_experience,
-        gender_rate
-      }
-
-
-      setPokemon({
-        id,
-        name,
-        types,
-        abilities: abilities.map((ability: any) => ability.ability.name),
-        stats,
-        description,
-        color: backgroundColor,
-        pokemonData
-      });
-    } catch (err) {
-      Alert.alert('Algo deu errado', 'Não foi possível carregar os detalhes do pokémon');
+      const data = await getPokemonDetails(pokemonId);
+      console.log(data)
+      setPokemon(data)
+    } catch (err: any) {
+      console.log(err)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
+
   }
 
   useEffect(() => {
     if (typeof pokemonId === 'number') {
-      getPokemonDetails(pokemonId)
+      setTimeout(() => {
+        getPokemon();
+      }, 1000);
     }
   }, [pokemonId])
 
@@ -90,15 +57,16 @@ export const DescriptionScreen: React.FC = () => {
   return (
     <>
       {loading
-        ? <>
-            <Text>Carregando</Text>
-          </>
+        ? <View style={{ flex: 1, justifyContent: 'center', alignItems:'center'}}>
+            <ActivityIndicator size="large" color="#d7d7d7" />
+
+          </View>
           : <ScrollView
               style={{ flex: 1, backgroundColor: '#fff' }}
               showsVerticalScrollIndicator={false}
             >
-              <S.Header type={pokemon.types[0].type.name}>
-                <S.BackButton onPress={handleGoBack}>
+                <S.Header type={pokemon?.types?.[0]?.type?.name}>
+                  <S.BackButton onPress={handleGoBack}>
                   <Feather name="chevron-left" size={24} color="#FFF"/>
                 </S.BackButton>
 
