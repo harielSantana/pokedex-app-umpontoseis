@@ -2,7 +2,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 import { IPokemonType } from "../Type/_types";
 
-export const PokemonCard = styled.TouchableOpacity <{ type: IPokemonType }>` 
+export const PokemonCard = styled.TouchableOpacity <{ type: IPokemonType }>`
     padding: ${RFValue(20)}px;
     margin-top: ${RFValue(20)}px;
     border-radius: 10px;
@@ -41,7 +41,7 @@ export const Name = styled.Text`
 
 export const PokemonTypeContainer = styled.View`
     flex-direction: row;
-    
+
     margin-top: 5px;
     gap: 5px;
 `;

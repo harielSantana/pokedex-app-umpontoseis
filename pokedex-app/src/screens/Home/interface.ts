@@ -18,6 +18,6 @@ export type Pokemon = {
 
 export type Resquest = {
   id: number;
-  types: PokemonType[]; 
+  types: PokemonType[];
   sprites: any;
 }

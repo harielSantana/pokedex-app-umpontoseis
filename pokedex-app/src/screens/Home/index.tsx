@@ -1,4 +1,3 @@
-
 import Card from "@components/Card";
 import { FadeAnimation } from "@components/FadeAnimation";
 import SearchInput from "@components/Input";
@@ -18,16 +17,16 @@ import FilterSVG from "../../assets/icons/filter.svg";
 import GenerationSVG from "../../assets/icons/generation.svg";
 import SortSVG from "../../assets/icons/sort.svg";
 import { api } from "../../services/api";
-import { Pokemon, Resquest } from "./_types";
+import { Pokemon, Resquest } from "./interface";
 import * as S from "./styles";
-
 
 const platform_ios = Platform.OS === "ios";
 
 export const HomeScreen: React.FC = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
+  const [searchResults, setSearchResults] = useState<Pokemon[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
 
   const modalizeRef = useRef<Modalize>(null);
@@ -40,6 +39,12 @@ export const HomeScreen: React.FC = () => {
     setSearchValue(text);
   }, []);
 
+  const renderFooter = () => {
+    return loading ? <ActivityIndicator size="small" color="#d7d7d7" style={{ marginTop: 6}}/>
+      : null;
+  };
+
+
   async function getMoreInfo(url: string): Promise<Resquest> {
     const response = await api.get(url);
     const { id, types, sprites } = response.data;
@@ -47,10 +52,39 @@ export const HomeScreen: React.FC = () => {
     return { id, types, sprites };
   }
 
-  const renderFooter = () => {
-  return loading ? <ActivityIndicator size="small" color="#d7d7d7" style={{ marginTop: 6}}/>
-    : null;
-  };
+  const handleSearchSubmit = useCallback(() => {
+    // Se houver um valor de pesquisa, atualize os resultados da busca
+    if (searchValue) {
+      fetchPokemons(searchValue);
+    }
+  }, [searchValue]);
+
+  async function fetchPokemons(query: string) {
+    try {
+      setLoading(true);
+
+      const response = await api.get(`pokemon/${query}`);
+      const pokemonData = response.data;
+
+      if (!pokemonData) {
+        throw new Error("No data returned for the requested Pokémon.");
+      }
+
+      const { id, name, types, sprites } = pokemonData;
+      const responseData = [{
+        id,
+        name,
+        types,
+        sprites: sprites.other.showdown.front_default,
+      }];
+
+      setSearchResults(responseData as any);
+    } catch (error) {
+      console.error("Error fetching Pokémon data:", error);
+    } finally {
+      setLoading(false); // Defina loading como false no final, mesmo se ocorrer um erro
+    }
+  }
 
   useEffect(() => {
     async function getAllPokemons() {
@@ -74,9 +108,10 @@ export const HomeScreen: React.FC = () => {
           })
         );
 
-        // Se a página for 1, substitua diretamente a lista de pokémons
-        // Caso contrário, adicione novos pokémons ao final da lista
-        setPokemons(prevPokemons => page === 1 ? payloadPokemons : [...prevPokemons, ...payloadPokemons]);
+        // Atualize a lista de todos os Pokémon
+        setAllPokemons((prevPokemons) =>
+          page === 1 ? payloadPokemons : [...prevPokemons, ...payloadPokemons]
+        );
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -86,6 +121,9 @@ export const HomeScreen: React.FC = () => {
 
     getAllPokemons();
   }, [page]);
+
+  // Renderize os pokémons com base nos resultados da busca, se houver uma busca em andamento
+  const renderedPokemons = searchValue ? searchResults : allPokemons;
 
 
   return (
@@ -115,10 +153,11 @@ export const HomeScreen: React.FC = () => {
                 icon="search"
                 placeholder="What Pokémon are you looking for?"
                 onTextChange={handleSearchChange}
+                onSubmitEditing={handleSearchSubmit} // Chama a função de busca ao pressionar Enter
               />
 
               <FlatList
-                data={pokemons}
+                data={renderedPokemons}
                 renderItem={({ item }) => <FadeAnimation>
                   <Card value={item} />
                 </FadeAnimation>}

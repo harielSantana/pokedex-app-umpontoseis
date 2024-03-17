@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import InitialImage from "../../assets/images/dots.png";
-import { Pokemon } from "../../screens/Home/_types";
+import { Pokemon } from "../../screens/Home/interface";
 import PokemonType from "../Type";
 import * as S from "./styles";
 

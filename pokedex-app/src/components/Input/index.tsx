@@ -24,6 +24,8 @@ const SearchInput: React.FC<InputProps> = React.memo(
           />
           <Styled.InputField
             {...rest}
+            autoCorrect={false}
+            autoCapitalize="none" // Configurando para não capitalizar automaticamente
             onChangeText={onTextChange}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
