@@ -19,6 +19,12 @@ export default {
     steel: "#417D9A",
     water: "#4A90DA",
   },
+
+  height: {
+    short: "#eee",
+    medium: "#ccc",
+    tall: "#aaa",
+  },
   background_type: {
     bug: "#8BD674",
     dark: "#6F6E78",
@@ -45,7 +51,7 @@ export default {
     default_input: "#f2f2f2",
     pressed_input: "#e2e2e2",
     modal: "rgba(23, 23, 27, 0.5)",
-    button:"rgba(23, 23, 27, 0.1)",
+    button: "rgba(23, 23, 27, 0.1)",
   },
 
   text: {

@@ -1,9 +1,9 @@
-import { IPokemonType } from "@components/Type/_types";
+import { IPokemonHeight } from "@components/Modals/Filter/_types";
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 
 export const IconContainer = styled.View<{
-  type: IPokemonType;
+  height: IPokemonHeight;
   isSelected: boolean;
 }>`
   border-radius: 50%;
@@ -11,7 +11,7 @@ export const IconContainer = styled.View<{
   padding: 10px;
   width: auto;
   height: auto;
-  background-color: ${({ theme, type }) => theme.type[type] || "#FFFFF"};
+  background-color: ${({ theme, height }) => theme.height[height] || "#FFFFF"};
   opacity: ${({ isSelected }) => (isSelected ? 1 : 0.5)};
 
   margin-right: 10px;

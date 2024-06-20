@@ -16,7 +16,13 @@ import PsychicTypeSvg from "@assets/types/psychic.svg";
 import RockTypeSvg from "@assets/types/rock.svg";
 import SteelTypeSvg from "@assets/types/steel.svg";
 import WaterTypeSvg from "@assets/types/water.svg";
+
+import ShortTypeSvg from "@assets/heights/short.svg";
+import MediumTypeSvg from "@assets/heights/medium.svg";
+import TallTypeSvg from "@assets/heights/tall.svg";
+
 import { IPokemonType } from "@components/Type/_types";
+import { IPokemonHeight } from "@components/Modals/Filter/_types";
 
 // Mapeamento entre tipo de Pokémon e componente SVG correspondente
 export const typeToSvg: Record<IPokemonType, React.FC> = {
@@ -38,4 +44,10 @@ export const typeToSvg: Record<IPokemonType, React.FC> = {
   rock: RockTypeSvg,
   steel: SteelTypeSvg,
   water: WaterTypeSvg,
+};
+
+export const heightToSVG: Record<IPokemonHeight, React.FC> = {
+  short: ShortTypeSvg,
+  medium: MediumTypeSvg,
+  tall: TallTypeSvg,
 };
