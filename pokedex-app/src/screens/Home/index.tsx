@@ -157,7 +157,9 @@ export const HomeScreen: React.FC = () => {
               />
 
               {searchValue && renderedPokemons.length === 0 && (
-                <S.NotFoundMessage>No Pokémon found with that name.</S.NotFoundMessage>
+                <S.NotFoundWrapper>
+                  <S.NotFoundMessage>No Pokémon found with that name.</S.NotFoundMessage>
+                </S.NotFoundWrapper>
               )}
 
               <FlatList
@@ -186,7 +188,7 @@ export const HomeScreen: React.FC = () => {
           </S.Container>
         </TouchableWithoutFeedback>
       </S.KAV>
-      <Modalize snapPoint={550} ref={modalizeRef} >
+      <Modalize snapPoint={640} ref={modalizeRef} >
         <FilterModal />
       </Modalize>
     </>

@@ -19,7 +19,10 @@ export const Description = styled.Text`
     RFValue(theme.font_size.filter_type_and_description)}px;
 `;
 
-export const FilterContainer = styled.View``;
+export const FilterContainer = styled.View`
+  display: flex;
+  gap: ${RFValue(10)}px;
+`;
 
 export const Subtitle = styled.Text`
   font-weight: 700;
@@ -35,4 +38,6 @@ export const ButtonContainer = styled.View`
   display: flex;
   flex-direction: row;
   gap: ${RFValue(10)}px;
+
+  margin-top: ${RFValue(30)}px;
 `;

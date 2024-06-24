@@ -23,10 +23,10 @@ const FilterModal: React.FC = () => {
         <S.Subtitle>Heights</S.Subtitle>
         <FilterHeight defaultHeight="medium" />
 
-        <S.Subtitle>Weights</S.Subtitle>
+        {/* <S.Subtitle>Weights</S.Subtitle> */}
         {/* Add your weights filter component here */}
 
-        <S.Subtitle>Number Range</S.Subtitle>
+        {/* <S.Subtitle>Number Range</S.Subtitle> */}
         {/* Add your number range filter component here */}
 
         <S.ButtonContainer>

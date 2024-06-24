@@ -45,9 +45,17 @@ export const Description = styled.Text`
         RFValue(theme.font_size.filter_type_and_description)}px;
 `;
 
+export const NotFoundWrapper = styled.View`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: ${RFValue(100)}px;
+`;
+
 export const NotFoundMessage = styled.Text`
-  font-size: 16px;
-  color: red;
-  margin-top: 10px;
+    font-size: 16px;
+    color: #ddd;
+    margin-top: 10px;
 `;
 
