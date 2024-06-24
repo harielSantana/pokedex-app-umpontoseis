@@ -3,6 +3,7 @@ import { FadeAnimation } from "@components/FadeAnimation";
 import SearchInput from "@components/Input";
 import FilterModal from "@components/Modals/Filter";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+
 import {
   ActivityIndicator,
   FlatList,
@@ -44,7 +45,6 @@ export const HomeScreen: React.FC = () => {
       : null;
   };
 
-
   async function getMoreInfo(url: string): Promise<Resquest> {
     const response = await api.get(url);
     const { id, types, sprites } = response.data;
@@ -67,7 +67,8 @@ export const HomeScreen: React.FC = () => {
       const pokemonData = response.data;
 
       if (!pokemonData) {
-        throw new Error("No data returned for the requested Pokémon.");
+        setSearchResults([]); // Define como um array vazio se nenhum Pokémon for encontrado
+        return;
       }
 
       const { id, name, types, sprites } = pokemonData;
@@ -82,9 +83,10 @@ export const HomeScreen: React.FC = () => {
     } catch (error) {
       console.error("Error fetching Pokémon data:", error);
     } finally {
-      setLoading(false); // Defina loading como false no final, mesmo se ocorrer um erro
+      setLoading(false);
     }
   }
+
 
   useEffect(() => {
     async function getAllPokemons() {
@@ -115,16 +117,15 @@ export const HomeScreen: React.FC = () => {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setLoading(false);
+        setLoading(false); // Garante que loading seja definido como false, mesmo se ocorrer um erro
       }
     }
 
-    getAllPokemons();
-  }, [page]);
+    if(!searchValue) getAllPokemons();
+  }, [page, searchValue]); // Dependência apenas em 'page' para evitar chamadas desnecessárias
 
   // Renderize os pokémons com base nos resultados da busca, se houver uma busca em andamento
   const renderedPokemons = searchValue ? searchResults : allPokemons;
-
 
   return (
     <>
@@ -148,7 +149,6 @@ export const HomeScreen: React.FC = () => {
               <S.Description>
                 Search for Pokémon by name or using the National Pokédex number.
               </S.Description>
-
               <SearchInput
                 icon="search"
                 placeholder="What Pokémon are you looking for?"
@@ -156,11 +156,17 @@ export const HomeScreen: React.FC = () => {
                 onSubmitEditing={handleSearchSubmit} // Chama a função de busca ao pressionar Enter
               />
 
+              {searchValue && renderedPokemons.length === 0 && (
+                <S.NotFoundMessage>No Pokémon found with that name.</S.NotFoundMessage>
+              )}
+
               <FlatList
                 data={renderedPokemons}
-                renderItem={({ item }) => <FadeAnimation>
-                  <Card value={item} />
-                </FadeAnimation>}
+                renderItem={({ item }) => (
+                  <FadeAnimation>
+                    <Card value={item} />
+                  </FadeAnimation>
+                )}
                 keyExtractor={(item) => String(item.id)}
                 showsVerticalScrollIndicator={false}
                 onEndReached={() => {
@@ -176,6 +182,7 @@ export const HomeScreen: React.FC = () => {
                 }}
               />
             </S.MainContainer>
+
           </S.Container>
         </TouchableWithoutFeedback>
       </S.KAV>

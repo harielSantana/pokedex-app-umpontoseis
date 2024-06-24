@@ -44,3 +44,10 @@ export const Description = styled.Text`
     font-size: ${({ theme }) =>
         RFValue(theme.font_size.filter_type_and_description)}px;
 `;
+
+export const NotFoundMessage = styled.Text`
+  font-size: 16px;
+  color: red;
+  margin-top: 10px;
+`;
+
