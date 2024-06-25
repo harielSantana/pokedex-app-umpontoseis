@@ -109,7 +109,7 @@ export const DescriptionScreen: React.FC = () => {
 
               <S.Container>
                 {page === 1 && <About type={pokemon.types[0].type.name} pokemon={pokemon} />}
-                {page === 2 && <Stats/>}
+                {page === 2 && <Stats type={pokemon.types[0].type.name} pokemon={pokemon}/>}
                 {page === 3 && <Evolution/>}
               </S.Container>
             </ScrollView>

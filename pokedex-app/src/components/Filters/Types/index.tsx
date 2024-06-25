@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { FlatList } from "react-native";
 import * as S from "./styles";
 import { typeToSvg } from "@utils/findPokemonByType";
@@ -19,32 +19,20 @@ const SelectedType = ({
   );
 };
 
-const FilterType: React.FC<{ defaultType?: IPokemonType }> = ({
+const FilterType: React.FC<{ defaultType?: any; onChangeType: (type: IPokemonType | undefined) => void }> = ({
   defaultType,
+  onChangeType,
 }) => {
-  const [selectedType, setSelectedType] = useState<IPokemonType | null>(
-    defaultType || null,
-  );
+  const [selectedType, setSelectedType] = useState<IPokemonType | undefined>(defaultType);
+
+  const handleTypeChange = useCallback((type: IPokemonType | undefined) => {
+    setSelectedType(type);
+    onChangeType(type);
+  }, [onChangeType]);
 
   const pokemon_types: IPokemonType[] = [
-    "bug",
-    "dark",
-    "dragon",
-    "electric",
-    "fairy",
-    "fighting",
-    "fire",
-    "flying",
-    "ghost",
-    "grass",
-    "ground",
-    "ice",
-    "normal",
-    "poison",
-    "psychic",
-    "rock",
-    "steel",
-    "water",
+    "bug", "dark", "dragon", "electric", "fairy", "fighting", "fire", "flying",
+    "ghost", "grass", "ground", "ice", "normal", "poison", "psychic", "rock", "steel", "water"
   ];
 
   return (
@@ -52,7 +40,7 @@ const FilterType: React.FC<{ defaultType?: IPokemonType }> = ({
       data={pokemon_types}
       keyExtractor={(item) => item}
       renderItem={({ item }) => (
-        <S.Touchable onPress={() => setSelectedType(item)}>
+        <S.Touchable onPress={() => handleTypeChange(item)}>
           <SelectedType type={item} isSelected={item === selectedType} />
         </S.Touchable>
       )}
@@ -61,5 +49,6 @@ const FilterType: React.FC<{ defaultType?: IPokemonType }> = ({
     />
   );
 };
+
 
 export default FilterType;

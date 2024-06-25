@@ -1,4 +1,3 @@
-// FilterHeight.tsx
 import React, { useState } from "react";
 import { FlatList } from "react-native";
 import * as S from "./styles";
@@ -20,12 +19,18 @@ const SelectedHeight = ({
   );
 };
 
-const FilterHeight: React.FC<{ defaultHeight?: IPokemonHeight }> = ({
+const FilterHeight: React.FC<{ defaultHeight?: any; onChangeHeight: (height: IPokemonHeight | undefined) => void }> = ({
   defaultHeight,
+  onChangeHeight,
 }) => {
-  const [selectedHeight, setSelectedHeight] = useState<IPokemonHeight | null>(
-    defaultHeight || null,
+  const [selectedHeight, setSelectedHeight] = useState<IPokemonHeight | undefined>(
+    defaultHeight
   );
+
+  const handleHeightChange = (height: IPokemonHeight | undefined) => {
+    setSelectedHeight(height);
+    onChangeHeight(height);
+  };
 
   const pokemon_heights: IPokemonHeight[] = ["short", "medium", "tall"];
 
@@ -34,7 +39,7 @@ const FilterHeight: React.FC<{ defaultHeight?: IPokemonHeight }> = ({
       data={pokemon_heights}
       keyExtractor={(item) => item}
       renderItem={({ item }) => (
-        <S.Touchable onPress={() => setSelectedHeight(item)}>
+        <S.Touchable onPress={() => handleHeightChange(item)}>
           <SelectedHeight height={item} isSelected={item === selectedHeight} />
         </S.Touchable>
       )}

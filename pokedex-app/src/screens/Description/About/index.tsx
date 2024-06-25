@@ -11,7 +11,7 @@ interface AboutProps {
 }
 
 export const About: React.FC<AboutProps> = ({type, pokemon}: AboutProps) => {
-  function FindPercentage(probabilidade: number): number {
+  function findPercentage(probabilidade: number): number {
     if (probabilidade === -1) {
         return 0; // Para Pokémon sem gênero
     } else {
@@ -78,11 +78,11 @@ export const About: React.FC<AboutProps> = ({type, pokemon}: AboutProps) => {
           <View style={{flexDirection: "row", alignItems: "center", gap: 3}}>
             <Foundation name="female-symbol" size={24} color="#4A90E2" />
             <S.GenderText gender="male">
-              {FindPercentage(pokemon.pokemonData.gender_rate)}%,{'  '}
+              {findPercentage(pokemon.pokemonData.gender_rate)}%,{'  '}
             </S.GenderText>
             <Foundation name="male-symbol" size={24} color="#FF66C4" />
             <S.GenderText gender="female">
-              {FindPercentage(8 - pokemon.pokemonData.gender_rate)}%
+              {findPercentage(8 - pokemon.pokemonData.gender_rate)}%
             </S.GenderText>
           </View>
         </Detail>
