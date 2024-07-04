@@ -20,7 +20,6 @@ import { Stats } from './Stats'
 import { getPokemonDetails } from './request'
 
 export const DescriptionScreen: React.FC = () => {
-  const { type } = useTheme()
   const route = useRoute()
   const { goBack } = useNavigation()
   const { pokemonId } = route.params as { pokemonId: number }
@@ -32,7 +31,6 @@ export const DescriptionScreen: React.FC = () => {
   async function getPokemon() {
     try {
       const data = await getPokemonDetails(pokemonId);
-      console.log(data)
       setPokemon(data)
     } catch (err: any) {
       console.log(err)

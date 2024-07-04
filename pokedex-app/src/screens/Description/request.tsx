@@ -35,6 +35,7 @@ export async function getPokemonDetails(pokemonId: number) {
       stats,
       description,
       color: backgroundColor,
+      damage_relation: damage_relations,
       pokemonData: {
         species: genera.find((entry: any) => entry.language.name === 'en').genus,
         height,

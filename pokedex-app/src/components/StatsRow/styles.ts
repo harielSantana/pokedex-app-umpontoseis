@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components/native";
-import { TypeName } from "../interface";
 import { RFValue } from "react-native-responsive-fontsize";
+import { TypeName } from "@screens/Description/interface";
 
 interface TypeProps {
   type: TypeName;
@@ -76,7 +76,7 @@ export const TotalRow = styled.View`
     justify-content: space-between;
     margin-top: 16px;
     border-top-width: 1px;
-    border-top-color: ${({ theme }) => theme.background.white};
+    border-top-color: ${({ theme }) => theme.text.gray};
     padding-top: 8px;
 `;
 
@@ -91,11 +91,3 @@ export const TotalValue = styled.Text`
     font-weight: 700;
     color: ${({ theme }) => theme.text.gray};
 `;
-
-export const DescriptionText = styled.Text`
-    ${({ theme }) => css`
-        font-size: ${RFValue(theme.font_size.pokemon_number_type)}px;
-        color: ${({ theme }) => theme.text.gray};
-        margin: 20px 0;
-    `}`
-
