@@ -27,8 +27,7 @@ const FilterModal: React.FC = () => {
   }, [setFilters]);
 
   const handleApplyFilters = useCallback(() => {
-    // Lógica para aplicar os filtros (pode ser adicionada aqui)
-    // Por exemplo, fechar o modal, enviar os filtros para a API, etc.
+
   }, []);
 
   return (

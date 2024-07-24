@@ -22,6 +22,7 @@ interface TypeDefensesProps {
 }
 
 const TypeDefenses: React.FC<TypeDefensesProps> = ({ damageRelations }) => {
+
     const renderDamageRelations = (relation: DamageRelation[], label: string) => {
         return relation.map((type, index) => (
             <S.TypeItem key={index}>
