@@ -1,196 +1,168 @@
-import Card from "@components/Card";
-import { FadeAnimation } from "@components/FadeAnimation";
-import SearchInput from "@components/Input";
-import FilterModal from "@components/Modals/Filter";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-
+import React, { useState, useCallback } from 'react';
 import {
-  ActivityIndicator,
+  View,
+  Text,
   FlatList,
+  ActivityIndicator,
   Keyboard,
-  Platform,
-  TouchableWithoutFeedback
-} from "react-native";
-import { BorderlessButton } from "react-native-gesture-handler";
-import { Modalize } from "react-native-modalize";
-import { RFPercentage } from "react-native-responsive-fontsize";
-import FilterSVG from "../../assets/icons/filter.svg";
-import GenerationSVG from "../../assets/icons/generation.svg";
-import SortSVG from "../../assets/icons/sort.svg";
-import { api } from "../../services/api";
-import { Pokemon, Resquest } from "./interface";
-import * as S from "./styles";
+  TouchableWithoutFeedback,
+  RefreshControl,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { usePokemonList, usePokemonSearch } from '@/hooks/usePokemon';
+import Card from '@/components/Card';
+import Input from '@/components/Input';
+import Button from '@/components/Button';
+import { cn } from '@/utils/cn';
 
-const platform_ios = Platform.OS === "ios";
+const HomeScreen: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
 
-export const HomeScreen: React.FC = () => {
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
-  const [searchResults, setSearchResults] = useState<Pokemon[]>([]);
-  const [searchValue, setSearchValue] = useState<string>("");
+  const {
+    data: pokemonListData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    refetch,
+    isRefetching,
+  } = usePokemonList();
 
-  const modalizeRef = useRef<Modalize>(null);
+  const {
+    data: searchResults,
+    isLoading: isSearchLoading,
+  } = usePokemonSearch(searchQuery);
 
-  const onOpen = () => {
-    modalizeRef.current?.open();
-  };
-
-  const handleSearchChange = useCallback((text: string) => {
-    setSearchValue(text);
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query);
+    setIsSearching(query.length > 0);
   }, []);
 
-  const renderFooter = () => {
-    return loading ? <ActivityIndicator size="small" color="#d7d7d7" style={{ marginTop: 6}}/>
-      : null;
-  };
+  const handleClearSearch = useCallback(() => {
+    setSearchQuery('');
+    setIsSearching(false);
+  }, []);
 
-  async function getMoreInfo(url: string): Promise<Resquest> {
-    const response = await api.get(url);
-    const { id, types, sprites } = response.data;
-
-    return { id, types, sprites };
-  }
-
-  const handleSearchSubmit = useCallback(() => {
-    // Se houver um valor de pesquisa, atualize os resultados da busca
-    if (searchValue) {
-      fetchPokemons(searchValue);
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage && !isSearching) {
+      fetchNextPage();
     }
-  }, [searchValue]);
+  }, [hasNextPage, isFetchingNextPage, isSearching, fetchNextPage]);
 
-  async function fetchPokemons(query: string) {
-    try {
-      setLoading(true);
+  const renderPokemon = useCallback(({ item }: { item: any }) => (
+    <Card pokemon={item} />
+  ), []);
 
-      const response = await api.get(`pokemon/${query}`);
-      const pokemonData = response.data;
-
-      if (!pokemonData) {
-        setSearchResults([]); // Define como um array vazio se nenhum Pokémon for encontrado
-        return;
-      }
-
-      const { id, name, types, sprites } = pokemonData;
-      const responseData = [{
-        id,
-        name,
-        types,
-        sprites: sprites.other.showdown.front_default,
-      }];
-
-      setSearchResults(responseData as any);
-    } catch (error) {
-      console.error("Error fetching Pokémon data:", error);
-    } finally {
-      setLoading(false);
+  const renderFooter = useCallback(() => {
+    if (isFetchingNextPage) {
+      return (
+        <View className="py-4 items-center">
+          <ActivityIndicator size="small" color="#17171B" />
+        </View>
+      );
     }
-  }
+    return null;
+  }, [isFetchingNextPage]);
 
-
-  useEffect(() => {
-    async function getAllPokemons() {
-      try {
-        setLoading(true);
-        const response = await api.get(
-          `pokemon?offset=${(page - 1) * 20}&limit=20`
-        );
-        const { results } = response.data;
-
-        const payloadPokemons = await Promise.all(
-          results.map(async (pokemon: Pokemon) => {
-            const { id, types, sprites } = await getMoreInfo(pokemon.url);
-
-            return {
-              name: pokemon.name,
-              id,
-              types,
-              sprites: sprites.front_default,
-            };
-          })
-        );
-
-        // Atualize a lista de todos os Pokémon
-        setAllPokemons((prevPokemons) =>
-          page === 1 ? payloadPokemons : [...prevPokemons, ...payloadPokemons]
-        );
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false); // Garante que loading seja definido como false, mesmo se ocorrer um erro
-      }
+  const renderEmpty = useCallback(() => {
+    if (isSearching && searchResults?.length === 0) {
+      return (
+        <View className="flex-1 items-center justify-center py-20">
+          <Text className="text-pokemon-gray text-lg font-sf-medium text-center">
+            No Pokémon found with that name.
+          </Text>
+          <Button
+            title="Clear Search"
+            onPress={handleClearSearch}
+            variant="outline"
+            className="mt-4"
+          />
+        </View>
+      );
     }
+    return null;
+  }, [isSearching, searchResults, handleClearSearch]);
 
-    if(!searchValue) getAllPokemons();
-  }, [page, searchValue]); // Dependência apenas em 'page' para evitar chamadas desnecessárias
-
-  // Renderize os pokémons com base nos resultados da busca, se houver uma busca em andamento
-  const renderedPokemons = searchValue ? searchResults : allPokemons;
+  const pokemonData = isSearching ? searchResults : pokemonListData?.pages.flatMap(page => page.results);
+  const isLoadingData = isSearching ? isSearchLoading : isLoading;
 
   return (
-    <>
-      <S.KAV behavior="height" enabled>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <S.Container>
-            {/* Header */}
-            <S.HeaderContainer>
-              <S.ImageContainer>
-                <BorderlessButton onPress={onOpen}>
-                  <GenerationSVG width={26} height={26} color={"#000"} />
-                </BorderlessButton>
-                <SortSVG width={26} height={26} color={"#000"} />
-                <FilterSVG width={26} height={26} color={"#000"} />
-              </S.ImageContainer>
-            </S.HeaderContainer>
+    <SafeAreaView className="flex-1 bg-gray-50">
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View className="flex-1">
+          {/* Header */}
+          <View className="flex-row items-center justify-between px-6 py-4">
+            <View className="flex-row items-center space-x-4">
+              <Text className="text-2xl">⚙️</Text>
+              <Text className="text-2xl">🔄</Text>
+              <Text className="text-2xl">🔍</Text>
+            </View>
+          </View>
 
-            {/* Main Content */}
-            <S.MainContainer>
-              <S.Title>Pokédex</S.Title>
-              <S.Description>
-                Search for Pokémon by name or using the National Pokédex number.
-              </S.Description>
-              <SearchInput
-                icon="search"
-                placeholder="What Pokémon are you looking for?"
-                onTextChange={handleSearchChange}
-                onSubmitEditing={handleSearchSubmit} // Chama a função de busca ao pressionar Enter
+          {/* Main Content */}
+          <View className="flex-1 px-6">
+            <Text className="text-app-title text-pokemon-black font-sf-bold mb-2">
+              Pokédex
+            </Text>
+            
+            <Text className="text-base text-pokemon-gray font-sf-regular mb-6">
+              Search for Pokémon by name or using the National Pokédex number.
+            </Text>
+
+            <Input
+              placeholder="What Pokémon are you looking for?"
+              value={searchQuery}
+              onChangeText={handleSearch}
+              icon="search"
+              className="mb-6"
+            />
+
+            {isSearching && (
+              <Button
+                title="Clear Search"
+                onPress={handleClearSearch}
+                variant="outline"
+                size="sm"
+                className="mb-4 self-start"
               />
+            )}
 
-              {searchValue && renderedPokemons.length === 0 && (
-                <S.NotFoundWrapper>
-                  <S.NotFoundMessage>No Pokémon found with that name.</S.NotFoundMessage>
-                </S.NotFoundWrapper>
-              )}
+            {/* Pokemon List */}
+            <FlatList
+              data={pokemonData}
+              renderItem={renderPokemon}
+              keyExtractor={(item) => item.id.toString()}
+              showsVerticalScrollIndicator={false}
+              onEndReached={handleLoadMore}
+              onEndReachedThreshold={0.1}
+              ListFooterComponent={renderFooter}
+              ListEmptyComponent={renderEmpty}
+              refreshControl={
+                <RefreshControl
+                  refreshing={isRefetching}
+                  onRefresh={refetch}
+                  tintColor="#17171B"
+                />
+              }
+              contentContainerStyle={{
+                paddingBottom: 20,
+              }}
+            />
 
-              <FlatList
-                data={renderedPokemons}
-                renderItem={({ item }) => (
-                  <FadeAnimation>
-                    <Card value={item} />
-                  </FadeAnimation>
-                )}
-                keyExtractor={(item) => String(item.id)}
-                showsVerticalScrollIndicator={false}
-                onEndReached={() => {
-                  if (!loading) {
-                    setPage(page + 1);
-                  }
-                }}
-                onEndReachedThreshold={0.1}
-                ListFooterComponent={renderFooter}
-                style={{
-                  height: RFPercentage(platform_ios ? 75 : 65),
-                  marginTop: -10,
-                }}
-              />
-            </S.MainContainer>
-
-          </S.Container>
-        </TouchableWithoutFeedback>
-      </S.KAV>
-      <Modalize snapPoint={640} ref={modalizeRef} >
-        <FilterModal />
-      </Modalize>
-    </>
+            {isLoadingData && !isSearching && (
+              <View className="flex-1 items-center justify-center">
+                <ActivityIndicator size="large" color="#17171B" />
+                <Text className="text-pokemon-gray font-sf-medium mt-2">
+                  Loading Pokémon...
+                </Text>
+              </View>
+            )}
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </SafeAreaView>
   );
 };
+
+export default HomeScreen;
