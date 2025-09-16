@@ -1,31 +1,24 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "jsx": "react",
-    "target": "es5",
-    "module": "commonjs",
-    "lib": ["es6"],
-    "allowJs": true,
-    "outDir": "build",
-    "baseUrl": "./src",
     "strict": true,
-    "noImplicitAny": true,
-    "strictPropertyInitialization": false,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
     "paths": {
-      "@assets/*": ["assets/*"],
-      "@components/*": ["components/*"],
-      "@routes/*": ["routes/*"],
-      "@screens/*": ["screens/*"],
-      "@storage/*": ["storage/*"],
-      "@services/*": ["services/*"],
-      "@theme/*": ["theme/*"],
-      "@utils/*": ["utils/*"]
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/screens/*": ["./src/screens/*"],
+      "@/services/*": ["./src/services/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/assets/*": ["./src/assets/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/constants/*": ["./src/constants/*"]
     }
-  }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
 }
